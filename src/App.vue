@@ -10,12 +10,16 @@
     </header>
 
     <div class="content">
-      <div class="filters"></div>
+      <!-- <div class="filters"></div> -->
+  
+      <div class="loader" v-if="!isLoaded">
+        <i class="fas fa-spin fa-spinner"></i>
+      </div>
 
-      <div class="recipies-list">
+      <div class="recipies-list" v-if="isLoaded">
         <RecipeBox v-for="recipe in recipies" :key="recipe.idMeal" 
                   v-bind:recipe="recipe"></RecipeBox>
-      </div>  
+      </div>
     </div>
 
   </div>
@@ -31,7 +35,8 @@ export default {
   name: 'app',
   data() {
     return {
-      recipies: []
+      recipies: [],
+      isLoaded: false
     }
   },
   components: {
@@ -42,6 +47,7 @@ export default {
     axios.get('https://www.themealdb.com/api/json/v1/1/latest.php')
       .then(response => {
           this.recipies = response.data.meals;
+          this.isLoaded = true;
       });
   }
 }
@@ -60,6 +66,12 @@ export default {
   display: flex;
 }
 
+.loader {
+  margin: 0 auto;
+  align-self: center;
+  font-size: 8rem;
+}
+
 .filters {
   width: 200px;
   height: 100vh;
@@ -67,9 +79,14 @@ export default {
 }
 
 .recipies-list {
+  margin-top: 134px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+@media all and (min-width: 768px) {
+
 }
 
 </style>
