@@ -1,12 +1,12 @@
 <template>
     <div>
-        <input type="text" class="search" placeholder="Search for recepie...">
+        <input type="text" class="search" placeholder="Search for recipe...">
     </div>
 </template>
 
 <script>
 export default {
-    name: 'SearchBar'
+    name: 'SearchBar',
 }
 </script>
 

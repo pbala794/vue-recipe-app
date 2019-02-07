@@ -7,7 +7,9 @@
                 <i class="fas fa-bars"></i>
             </div>
 
-            <SearchBar></SearchBar>
+            <div class="search">
+                <SearchBar></SearchBar>
+            </div>
 
             <ul class="navbar" :class="{ 'navbar-active': sidebarIsActive }">
                 <li class="menu-item">Home</li>
@@ -45,6 +47,7 @@ export default {
     display: flex;
     background: #fded8c;
     align-items: center;
+    height: 70px;
 }
 
 .menu-icon {
@@ -63,7 +66,7 @@ export default {
     display: flex;
     flex-direction: column;
     left: -150px;
-    top: 42px;
+    top: 70px;
     background: inherit;
     width: 150px;
     height: 100%;
