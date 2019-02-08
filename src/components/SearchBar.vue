@@ -1,15 +1,33 @@
 <template>
     <div class="search-wrapper">
-        <!-- <span class="search-icon">
-            <i class="fas fa-search"></i>
-        </span> -->
-        <input type="text" class="search" placeholder="Search for recipe...">
+        <form @submit.prevent="onSearch">
+            <input type="text" class="search" placeholder="Search for recipe..."
+                    v-model="searchValue">
+        </form>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { EventBus } from '../event-bus.js'
+
 export default {
     name: 'SearchBar',
+    data() {
+        return {
+            searchValue: ''
+        }
+    },
+    methods: {
+        onSearch() {
+            axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${this.searchValue}`)
+                .then(results => {
+                    this.searchValue = '';
+                    EventBus.$emit('search', results.data.meals);
+                })
+                .catch(error => console.log(error));
+        }
+    }
 }
 </script>
 

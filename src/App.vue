@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios';
+import { EventBus } from './event-bus.js'
 
 import Navbar from './components/Navbar.vue'
 import RecipeBox from './components/RecipeBox'
@@ -48,6 +49,11 @@ export default {
       .then(response => {
           this.recipies = response.data.meals;
           this.isLoaded = true;
+      })
+      .catch(error => console.log(error))
+
+      EventBus.$on('search', recipies => {
+        this.recipies = recipies;
       });
   }
 }

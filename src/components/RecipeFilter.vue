@@ -4,6 +4,26 @@
                 @click="toggleFilters">
             Show filters
         </button>
+
+        <!-- <div class="filters">
+            <select>
+                <option>Category 1</option>
+                <option>Category 2</option>
+                <option>Category 3</option>
+            </select>
+
+            <select>
+                <option>Category 1</option>
+                <option>Category 2</option>
+                <option>Category 3</option>
+            </select>
+
+            <select>
+                <option>Category 1</option>
+                <option>Category 2</option>
+                <option>Category 3</option>
+            </select>
+        </div> -->
     </div>
 </template>
 
