@@ -22,6 +22,7 @@
 
         <div class="filter-bar">
             <RecipeFilter></RecipeFilter>
+            <Favourites></Favourites>
         </div>
   </div>
 </template>
@@ -29,12 +30,14 @@
 <script>
 import SearchBar from './SearchBar'
 import RecipeFilter from './RecipeFilter'
+import Favourites from './Favourites'
 
 export default {
   name: 'navbar',
   components: {
     SearchBar,
-    RecipeFilter
+    RecipeFilter,
+    Favourites
   },
   data() {
     return {

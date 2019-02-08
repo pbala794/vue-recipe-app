@@ -18,7 +18,9 @@
 
       <div class="recipies-list" v-if="isLoaded">
         <RecipeBox v-for="recipe in recipies" :key="recipe.idMeal" 
-                  v-bind:recipe="recipe"></RecipeBox>
+                  v-bind:recipe="recipe">
+        </RecipeBox>
+        <RecipeDetails v-if="showDetails" :recipe="selectedRecipe"></RecipeDetails>
       </div>
     </div>
 
@@ -31,18 +33,22 @@ import { EventBus } from './event-bus.js'
 
 import Navbar from './components/Navbar.vue'
 import RecipeBox from './components/RecipeBox'
+import RecipeDetails from './components/RecipeDetails'
 
 export default {
   name: 'app',
   data() {
     return {
+      selectedRecipe: {},
       recipies: [],
-      isLoaded: false
+      isLoaded: false,
+      showDetails: false
     }
   },
   components: {
     Navbar,
-    RecipeBox
+    RecipeBox,
+    RecipeDetails
   },
   mounted() {
     axios.get('https://www.themealdb.com/api/json/v1/1/latest.php')
@@ -54,6 +60,11 @@ export default {
 
       EventBus.$on('search', recipies => {
         this.recipies = recipies;
+      });
+
+      EventBus.$on('show-details', (status, recipe) => {
+        this.selectedRecipe = recipe;
+        this.showDetails = status;
       });
   }
 }
@@ -85,7 +96,7 @@ export default {
 }
 
 .recipies-list {
-  margin-top: 134px;
+  margin-top: 150px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

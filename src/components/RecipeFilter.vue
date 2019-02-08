@@ -2,7 +2,7 @@
     <div>
         <button type="button" class="filter-btn"
                 @click="toggleFilters">
-            Show filters
+            Filters <i class="fas fa-filter"></i>
         </button>
 
         <!-- <div class="filters">
@@ -48,9 +48,19 @@ export default {
     .filter-btn {
         background: #ffb16b6e;
         border: none;
-        padding: 7px;
+        padding: 10px;
         border-radius: 2px;
         font-size: 1.2rem;
+        letter-spacing: .8px;
+        margin: 0 5px;
+        color: #3d3d3d;
+        transition: all .2s ease-in-out;
+        text-transform: uppercase;
+    }
+
+    .filter-btn:hover {
+        color: #fff;
+        background: #c776306e;
     }
 
 </style>
