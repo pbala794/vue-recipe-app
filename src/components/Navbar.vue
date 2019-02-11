@@ -19,25 +19,16 @@
                 <SearchBar></SearchBar>
             </div>
         </nav>
-
-        <div class="filter-bar">
-            <RecipeFilter></RecipeFilter>
-            <Favourites></Favourites>
-        </div>
   </div>
 </template>
 
 <script>
 import SearchBar from './SearchBar'
-import RecipeFilter from './RecipeFilter'
-import Favourites from './Favourites'
 
 export default {
   name: 'navbar',
   components: {
-    SearchBar,
-    RecipeFilter,
-    Favourites
+    SearchBar
   },
   data() {
     return {
@@ -117,19 +108,6 @@ export default {
 
 .search {
     width: 100%;
-}
-
-.filter-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 74px;
-    left: 0;
-    right: 0;
-    background: #fded8c;
-    padding: 15px;
-    min-height: 20px;
 }
 
 @media all and (min-width: 768px) {

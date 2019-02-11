@@ -7,6 +7,11 @@
         
     <header>
       <Navbar></Navbar>
+
+      <div class="filter-bar">
+        <RecipeFilter></RecipeFilter>
+        <Favourites></Favourites>
+        </div>
     </header>
 
     <div class="content">
@@ -16,11 +21,14 @@
         <i class="fas fa-spin fa-spinner"></i>
       </div>
 
-      <div class="recipies-list" v-if="isLoaded">
-        <RecipeBox v-for="recipe in recipies" :key="recipe.idMeal" 
-                  v-bind:recipe="recipe">
+      <div class="no-results" v-if="isLoaded && !(recipies && recipies.length > 0)">
+        <h2>No search results. Try another recipe.</h2>
+      </div>
+
+      <div class="recipies-list" v-if="isLoaded && recipies && recipies.length > 0">
+        <RecipeBox v-for="recipe in recipies" :key="recipe.idMeal"
+                   v-bind:recipe="recipe">
         </RecipeBox>
-        <RecipeDetails v-if="showDetails" :recipe="selectedRecipe"></RecipeDetails>
       </div>
     </div>
 
@@ -32,23 +40,23 @@ import axios from 'axios';
 import { EventBus } from './event-bus.js'
 
 import Navbar from './components/Navbar.vue'
+import RecipeFilter from './components/RecipeFilter'
+import Favourites from './components/Favourites'
 import RecipeBox from './components/RecipeBox'
-import RecipeDetails from './components/RecipeDetails'
 
 export default {
   name: 'app',
   data() {
     return {
-      selectedRecipe: {},
       recipies: [],
-      isLoaded: false,
-      showDetails: false
+      isLoaded: false
     }
   },
   components: {
     Navbar,
-    RecipeBox,
-    RecipeDetails
+    RecipeFilter,
+    Favourites,
+    RecipeBox
   },
   mounted() {
     axios.get('https://www.themealdb.com/api/json/v1/1/latest.php')
@@ -58,13 +66,10 @@ export default {
       })
       .catch(error => console.log(error))
 
+      EventBus.$on('loading', () => this.isLoaded = false);
       EventBus.$on('search', recipies => {
         this.recipies = recipies;
-      });
-
-      EventBus.$on('show-details', (status, recipe) => {
-        this.selectedRecipe = recipe;
-        this.showDetails = status;
+        this.isLoaded = true;
       });
   }
 }
@@ -81,6 +86,7 @@ export default {
 
 .content {
   display: flex;
+  min-height: 100vh;
 }
 
 .loader {
@@ -89,10 +95,31 @@ export default {
   font-size: 8rem;
 }
 
-.filters {
+.no-results {
+  align-self: center;
+  margin: 0 auto;
+  font-size: 1.2rem;
+  border: 4px solid #fded8c;
+  padding: 10px;
+}
+
+/* .filters {
   width: 200px;
   height: 100vh;
   background: gainsboro;
+} */
+
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 74px;
+  left: 0;
+  right: 0;
+  background: #fded8c;
+  padding: 15px;
+  min-height: 20px;
 }
 
 .recipies-list {

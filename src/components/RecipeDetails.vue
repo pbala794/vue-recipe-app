@@ -32,7 +32,6 @@ export default {
     },
     data() {
         return {
-            recipe: {},
             ingredientsNum: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
         }
     },
@@ -75,9 +74,10 @@ export default {
     padding: 10px;
     width: 100%;
     min-height: 340px;
-    margin: 15px;
+    box-sizing: border-box;
+    /* margin: 15px;
     border: 3px solid lightgrey;
-    border-radius: 5px;
+    border-radius: 5px; */
 }
 
 @media all and (min-width: 768px) {

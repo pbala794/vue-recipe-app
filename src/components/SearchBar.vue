@@ -20,6 +20,8 @@ export default {
     },
     methods: {
         onSearch() {
+            EventBus.$emit('loading');
+            
             axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${this.searchValue}`)
                 .then(results => {
                     this.searchValue = '';

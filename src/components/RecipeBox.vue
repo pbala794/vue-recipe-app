@@ -1,18 +1,27 @@
 <template>
     <div class="recipe-box">
-        <div class="img-wrapper" @click="showRecipe(recipe)">
+        <div class="img-wrapper" @click="toggleRecipe">
+            <span class="thumb-text">
+                {{ !showRecipeDetails ? 'show details' : 'hide details' }}
+            </span>
             <img :src="recipe.strMealThumb" class="recipe-thumb" alt="meal">
         </div>
 
         <p class="recipe-title">{{ recipe.strMeal }}</p>
+
+        <RecipeDetails v-if="showRecipeDetails" :recipe="recipe"></RecipeDetails>
     </div>
 </template>
 
 <script>
 import { EventBus } from '../event-bus.js'
+import RecipeDetails from './RecipeDetails';
 
 export default {
     name: 'RecipeBox',
+    components: {
+        RecipeDetails
+    },
     props: {
         recipe: {
             type: Object,
@@ -34,9 +43,8 @@ export default {
         }
     },
     methods: {
-        showRecipe(recipe) {
-            this.showRecipeDetails = true;
-            EventBus.$emit('show-details', this.showRecipeDetails, this.recipe);
+        toggleRecipe() {
+            this.showRecipeDetails = !this.showRecipeDetails;
         }
     }
 }
@@ -53,12 +61,32 @@ export default {
 }
 
 .img-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 280px;
+    background: #000;
+}
+
+.img-wrapper:hover img {
+    cursor: pointer;
+    opacity: .5;
 }
 
 .recipe-thumb {
     width: 100%;
     height: 100%;
+    opacity: 1;
+    transition: opacity .15s ease-in-out;
+    z-index: 1;
+}
+
+.thumb-text {
+    position: absolute;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: #fff;
 }
 
 .recipe-title {
