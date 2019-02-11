@@ -8,15 +8,13 @@
     <header>
       <Navbar></Navbar>
 
-      <div class="filter-bar">
+      <div class="options-bar">
         <RecipeFilter></RecipeFilter>
         <Favourites></Favourites>
         </div>
     </header>
 
     <div class="content">
-      <!-- <div class="filters"></div> -->
-  
       <div class="loader" v-if="!isLoaded">
         <i class="fas fa-spin fa-spinner"></i>
       </div>
@@ -48,6 +46,7 @@ export default {
   name: 'app',
   data() {
     return {
+      isMobile: true,
       recipies: [],
       isLoaded: false
     }
@@ -58,10 +57,16 @@ export default {
     Favourites,
     RecipeBox
   },
+  // created() {
+  //   if (this.getBrowserWidth() > 768) {
+  //     this.isMobile = false;
+  //   }
+  // },
   mounted() {
     axios.get('https://www.themealdb.com/api/json/v1/1/latest.php')
       .then(response => {
           this.recipies = response.data.meals;
+          EventBus.$emit('latest', this.recipies);
           this.isLoaded = true;
       })
       .catch(error => console.log(error))
@@ -71,6 +76,53 @@ export default {
         this.recipies = recipies;
         this.isLoaded = true;
       });
+      EventBus.$on('filter', filters => {
+        this.onRecipeFilter(filters);
+      });
+      // window.addEventListener('resize', () => {
+      //   this.getBrowserWidth() > 768 ? this.isMobile = false : this.isMobile = false;
+      //   console.log(this.isMobile);
+      // });
+  },
+  methods: {
+    getBrowserWidth() {
+      return Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+      )
+    },
+    onRecipeFilter(filtersObj) {
+      let areaFiltered = [],
+          catFiltered = [],
+          tagsFiltered = [];
+
+      if (filtersObj['areaFilters'].length > 0) {
+        areaFiltered = this.recipies.filter(recipe => {
+          return filtersObj['areaFilters'].includes(recipe.strArea);
+        })
+      }
+      if (filtersObj['catFilters'].length > 0) {
+        catFiltered = this.recipies.filter(recipe => {
+          return filtersObj['catFilters'].includes(recipe.strCategory);
+        })
+      }
+      if (filtersObj['tagFilters'].length > 0) {
+        tagsFiltered = this.recipies.filter(recipe => {
+          return filtersObj['strTags'].includes(recipe.strTags);
+        })
+      }
+
+      this.recipies = [...areaFiltered, ...catFiltered, ...tagsFiltered];
+      // console.log(this.recipies, filtersObj);
+      // console.log(this.recipies, filtersObj);
+      // console.log(this.recipies, filtersObj);
+    }
+  },
+  destroyed() {
+    EventBus.$off();
   }
 }
 </script>
@@ -103,13 +155,7 @@ export default {
   padding: 10px;
 }
 
-/* .filters {
-  width: 200px;
-  height: 100vh;
-  background: gainsboro;
-} */
-
-.filter-bar {
+.options-bar {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -120,6 +166,7 @@ export default {
   background: #fded8c;
   padding: 15px;
   min-height: 20px;
+  z-index: 2;
 }
 
 .recipies-list {
